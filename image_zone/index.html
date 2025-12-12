@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片专区</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
+                        accent: '#8b5cf6',
+                        dark: '#1f2937',
+                        light: '#f3f4f6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-primary">17926的网页</h1>
+            <div class="flex space-x-4">
+                <a href="../index.html" class="text-gray-600 hover:text-primary transition-colors">首页</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 图片专区 -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-12 text-dark">图片专区</h2>
+            
+            <!-- 搜索和筛选 -->
+            <div class="max-w-4xl mx-auto mb-12 bg-white p-6 rounded-lg shadow-md">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-grow">
+                        <div class="relative">
+                            <input type="text" id="searchInput" placeholder="搜索图片..." class="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                            <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="advancedFilterBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center">
+                            <i class="fa fa-filter mr-2"></i>高级筛选
+                        </button>
+                    </div>
+                </div>
+                <!-- 高级筛选面板 -->
+                <div id="filterPanel" class="hidden mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">年级</label>
+                            <select id="gradeFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option value="all">全部</option>
+                                <option value="2021">2021级</option>
+                                <option value="2022">2022级</option>
+                                <option value="2023">2023级</option>
+                                <option value="2024">2024级</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">专业1</label>
+                            <select id="major1Filter" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option value="all">全部</option>
+                                <option value="cs">计算机科学</option>
+                                <option value="ee">电子工程</option>
+                                <option value="math">数学</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">专业2</label>
+                            <select id="major2Filter" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option value="all">全部</option>
+                                <option value="ai">人工智能</option>
+                                <option value="ds">数据科学</option>
+                                <option value="se">软件工程</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">班级</label>
+                            <select id="classFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option value="all">全部</option>
+                                <option value="1">1班</option>
+                                <option value="2">2班</option>
+                                <option value="3">3班</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">时间</label>
+                            <select id="timeFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
+                                <option value="all">全部</option>
+                                <option value="2024">2024年</option>
+                                <option value="2023">2023年</option>
+                                <option value="2022">2022年</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-end gap-2">
+                        <button id="resetFilterBtn" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">重置</button>
+                        <button id="applyFilterBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">应用筛选</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 图片网格 -->
+            <div id="imageGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- 图片将通过 JavaScript 动态加载 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 17926的网页. 保留所有权利.</p>
+            <p class="mt-4">
+                <a href="mailto:3441318605@qq.com" class="text-gray-300 hover:text-white transition-colors">
+                    <i class="fa fa-envelope mr-2"></i>3441318605@qq.com
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const imageGrid = document.getElementById('imageGrid');
+        const searchInput = document.getElementById('searchInput');
+        const filterPanel = document.getElementById('filterPanel');
+        const advancedFilterBtn = document.getElementById('advancedFilterBtn');
+        const resetFilterBtn = document.getElementById('resetFilterBtn');
+        const applyFilterBtn = document.getElementById('applyFilterBtn');
+        const gradeFilter = document.getElementById('gradeFilter');
+        const major1Filter = document.getElementById('major1Filter');
+        const major2Filter = document.getElementById('major2Filter');
+        const classFilter = document.getElementById('classFilter');
+        const timeFilter = document.getElementById('timeFilter');
+
+        let currentSearchTerm = '';
+        let currentFilters = {
+            grade: 'all',
+            major1: 'all',
+            major2: 'all',
+            class: 'all',
+            time: 'all'
+        };
+
+        // 模拟图片数据
+        const images = [
+            { id: 1, url: 'https://images.unsplash.com/photo-1500835556837-99ac94a94552?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', title: '活动照片1', grade: '2023', major1: 'cs', major2: 'ai', class: '1', time: '2024', description: '计算机科学与技术1班活动留影。' },
+            { id: 2, url: 'https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', title: '活动照片2', grade: '2022', major1: 'ee', major2: 'ds', class: '2', time: '2024', description: '电子工程2班活动留影。' },
+            { id: 3, url: 'https://images.unsplash.com/photo-1543512214-318c7553f230?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', title: '活动照片3', grade: '2023', major1: 'math', major2: 'ai', class: '3', time: '2023', description: '数学3班活动留影。' },
+            { id: 4, url: 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', title: '活动照片4', grade: '2024', major1: 'cs', major2: 'se', class: '1', time: '2024', description: '计算机科学与技术1班活动留影。' },
+            { id: 5, url: 'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', title: '活动照片5', grade: '2021', major1: 'ee', major2: 'ai', class: '2', time: '2023', description: '电子工程2班活动留影。' },
+            { id: 6, url: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', title: '活动照片6', grade: '2022', major1: 'math', major2: 'ds', class: '3', time: '2022', description: '数学3班活动留影。' },
+        ];
+
+        // 渲染图片
+        function renderImages() {
+            imageGrid.innerHTML = '';
+            const filteredImages = images.filter(img => {
+                const matchesSearch = img.title.toLowerCase().includes(currentSearchTerm) || img.description.toLowerCase().includes(currentSearchTerm);
+                const matchesGrade = currentFilters.grade === 'all' || img.grade === currentFilters.grade;
+                const matchesMajor1 = currentFilters.major1 === 'all' || img.major1 === currentFilters.major1;
+                const matchesMajor2 = currentFilters.major2 === 'all' || img.major2 === currentFilters.major2;
+                const matchesClass = currentFilters.class === 'all' || img.class === currentFilters.class;
+                const matchesTime = currentFilters.time === 'all' || img.time === currentFilters.time;
+
+                return matchesSearch && matchesGrade && matchesMajor1 && matchesMajor2 && matchesClass && matchesTime;
+            });
+
+            if (filteredImages.length === 0) {
+                imageGrid.innerHTML = `<p class="text-gray-500 col-span-full text-center">未找到相关图片。</p>`;
+                return;
+            }
+
+            filteredImages.forEach(img => {
+                const imageCard = document.createElement('div');
+                imageCard.className = 'bg-white rounded-lg shadow-md overflow-hidden card-hover';
+                imageCard.innerHTML = `
+                    <img src="${img.url}" alt="${img.title}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg text-dark mb-1">${img.title}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${img.description}</p>
+                        <div class="text-xs text-gray-500 grid grid-cols-2 gap-x-4 gap-y-1">
+                            <div><span class="font-medium">年级:</span> ${img.grade}级</div>
+                            <div><span class="font-medium">时间:</span> ${img.time}年</div>
+                            <div><span class="font-medium">专业1:</span> ${getMajorName(img.major1)}</div>
+                            <div><span class="font-medium">专业2:</span> ${getMajorName(img.major2)}</div>
+                            <div><span class="font-medium">班级:</span> ${img.class}班</div>
+                        </div>
+                    </div>
+                `;
+                imageGrid.appendChild(imageCard);
+            });
+        }
+
+        function getMajorName(code) {
+            const majors = {
+                'cs': '计算机科学',
+                'ee': '电子工程',
+                'math': '数学',
+                'ai': '人工智能',
+                'ds': '数据科学',
+                'se': '软件工程'
+            };
+            return majors[code] || code;
+        }
+
+        // 初始渲染
+        renderImages();
+
+        // 搜索功能
+        searchInput.addEventListener('input', (e) => {
+            currentSearchTerm = e.target.value.toLowerCase();
+            renderImages();
+        });
+
+        // 高级筛选按钮点击事件
+        advancedFilterBtn.addEventListener('click', () => {
+            filterPanel.classList.toggle('hidden');
+        });
+
+        // 重置筛选按钮点击事件
+        resetFilterBtn.addEventListener('click', () => {
+            gradeFilter.value = 'all';
+            major1Filter.value = 'all';
+            major2Filter.value = 'all';
+            classFilter.value = 'all';
+            timeFilter.value = 'all';
+        });
+
+        // 应用筛选按钮点击事件
+        applyFilterBtn.addEventListener('click', () => {
+            currentFilters.grade = gradeFilter.value;
+            currentFilters.major1 = major1Filter.value;
+            currentFilters.major2 = major2Filter.value;
+            currentFilters.class = classFilter.value;
+            currentFilters.time = timeFilter.value;
+            renderImages();
+            filterPanel.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>

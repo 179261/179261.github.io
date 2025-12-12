@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜数字游戏</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
+                        accent: '#8b5cf6',
+                        dark: '#1f2937',
+                        light: '#f3f4f6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: #f0f2f5;
+        }
+        .game-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .btn {
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .message {
+            min-height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-primary">17926的网页</h1>
+            <div class="flex space-x-4">
+                <a href="../../index.html" class="text-gray-600 hover:text-primary transition-colors">首页</a>
+                <a href="../index.html" class="text-gray-600 hover:text-primary transition-colors">游戏大厅</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="game-container text-center">
+        <h1 class="text-3xl font-bold text-dark mb-6">猜数字游戏</h1>
+        <p class="text-gray-600 mb-6">我已经想好了一个1到100之间的数字，你能猜出来吗？</p>
+        
+        <div class="flex justify-center mb-6">
+            <input type="number" id="guessInput" min="1" max="100" class="border border-gray-300 rounded-l-lg px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-primary">
+            <button id="guessButton" class="bg-primary text-white px-6 py-2 rounded-r-lg btn">猜!</button>
+        </div>
+
+        <div class="message text-lg font-semibold mb-4" id="message"></div>
+        
+        <div class="flex justify-between items-center">
+            <div>
+                <span class="text-gray-600">猜测次数: </span>
+                <span id="attempts" class="font-semibold">0</span>
+            </div>
+            <button id="restartButton" class="bg-secondary text-white px-4 py-2 rounded-lg btn">再来一局</button>
+        </div>
+    </div>
+
+    <script>
+        // 游戏逻辑
+        let secretNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
+
+        const guessInput = document.getElementById('guessInput');
+        const guessButton = document.getElementById('guessButton');
+        const message = document.getElementById('message');
+        const attemptsDisplay = document.getElementById('attempts');
+        const restartButton = document.getElementById('restartButton');
+
+        guessButton.addEventListener('click', makeGuess);
+        guessInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                makeGuess();
+            }
+        });
+        restartButton.addEventListener('click', restartGame);
+
+        function makeGuess() {
+            const userGuess = parseInt(guessInput.value);
+            
+            if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+                message.textContent = '请输入一个1到100之间的有效数字。';
+                message.style.color = '#ef4444'; // red-500
+                return;
+            }
+
+            attempts++;
+            attemptsDisplay.textContent = attempts;
+
+            if (userGuess === secretNumber) {
+                message.textContent = `恭喜你！你用了 ${attempts} 次就猜对了！`;
+                message.style.color = '#10b981'; // green-500
+                guessButton.disabled = true;
+                guessInput.disabled = true;
+            } else if (userGuess > secretNumber) {
+                message.textContent = '太大了！再试试。';
+                message.style.color = '#f59e0b'; // yellow-500
+            } else {
+                message.textContent = '太小了！再试试。';
+                message.style.color = '#f59e0b'; // yellow-500
+            }
+            
+            guessInput.value = '';
+            guessInput.focus();
+        }
+
+        function restartGame() {
+            secretNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            attemptsDisplay.textContent = attempts;
+            message.textContent = '';
+            guessButton.disabled = false;
+            guessInput.disabled = false;
+            guessInput.focus();
+        }
+        
+        // 页面加载时，让输入框自动聚焦
+        window.addEventListener('load', function() {
+            guessInput.focus();
+        });
+    </script>
+</body>
+</html>
