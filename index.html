@@ -62,7 +62,7 @@
     <section id="welcome" class="py-16 bg-gradient-to-br from-blue-500 to-purple-600 text-white">
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-4xl font-bold mb-6 text-shadow">欢迎来到我的网页</h2>
-            <p class="text-xl max-w-2xl mx-auto mb-8">既然你能来到这里，说明你大概与秦皇岛某大学有关。<br>总之，welcome！<br>如果有什么关于网站建设的想法，欢迎邮箱联系：<br>404541339@qq.com</p>
+            <p class="text-xl max-w-2xl mx-auto mb-8">既然你能来到这里，说明你大概与秦皇岛某大学有关。<br>总之，welcome！<br>如果有什么关于网站建设的想法，欢迎邮箱联系：<br>3441318605@qq.com</p>
             <button id="welcomeButton" class="bg-white text-primary font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition-colors">
                 点击这里会弹出一个窗口
             </button>
@@ -219,21 +219,12 @@
     <!-- 页脚 -->
     <footer class="bg-dark text-white py-8">
         <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2025 保留所有权利.</p>
-            <div class="flex justify-center space-x-4 mt-4">
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fa fa-facebook"></i>
+            <p>&copy; 2025 17926的网页. 保留所有权利.</p>
+            <p class="mt-4">
+                <a href="mailto:3441318605@qq.com" class="text-gray-300 hover:text-white transition-colors">
+                    <i class="fa fa-envelope mr-2"></i>3441318605@qq.com
                 </a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fa fa-twitter"></i>
-                </a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fa fa-instagram"></i>
-                </a>
-                <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                    <i class="fa fa-github"></i>
-                </a>
-            </div>
+            </p>
         </div>
     </footer>
 
@@ -242,37 +233,6 @@
         document.getElementById('welcomeButton').addEventListener('click', function() {
             alert('欢迎来到我的网页！其包含一些网站链接');
         });
-
-        <!--
-        // 图片上传功能
-        document.getElementById('imageUpload').addEventListener('change', function(e) {
-            if (e.target.files && e.target.files[0]) {
-                const reader = new FileReader();
-                
-                reader.onload = function(event) {
-                    // 创建新的图片卡片
-                    const gallery = document.querySelector('#gallery .grid');
-                    const newImageCard = document.createElement('div');
-                    newImageCard.className = 'bg-white rounded-lg shadow-md overflow-hidden card-hover';
-                    
-                    newImageCard.innerHTML = `
-                        <img src="${event.target.result}" alt="上传的图片" class="w-full h-64 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold text-dark mb-2">上传的图片</h3>
-                            <p class="text-gray-600">您刚刚上传的图片。</p>
-                        </div>
-                    `;
-                    
-                    gallery.appendChild(newImageCard);
-                    
-                    // 显示成功消息
-                    alert('图片上传成功！');
-                };
-                
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        });
-        -->
         
         // 平滑滚动功能
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
