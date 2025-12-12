@@ -81,24 +81,35 @@
                                 <option value="2022">2022级</option>
                                 <option value="2023">2023级</option>
                                 <option value="2024">2024级</option>
+                                <option value="2025">2025级</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">专业1</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">学院</label>
                             <select id="major1Filter" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
                                 <option value="all">全部</option>
-                                <option value="cs">计算机科学</option>
-                                <option value="ee">电子工程</option>
-                                <option value="math">数学</option>
+                                <option value="ee">电气工程学院</option>
+                                <option value="me">机械工程学院</option>
+                                <option value="mse">材料科学与工程学院</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">专业2</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">专业</label>
                             <select id="major2Filter" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
                                 <option value="all">全部</option>
-                                <option value="ai">人工智能</option>
-                                <option value="ds">数据科学</option>
-                                <option value="se">软件工程</option>
+
+                                <!--电气工程学院-->
+                                <option value="auto">自动化</option>  <!--Automation-->
+                                <option value="ee_sub">电气类</option> <!--Electrical_engineering-->
+
+                                <!--机械工程学院-->
+                                <option value="mech">机械设计制造及其自动化</option>  <!--Mechanical_design_manufacturing_and_automation-->
+                                <option value="mfc">材料成型及控制工程</option>  <!--Material_Forming_and_Control_engineering-->
+
+                                <!--材料科学与工程学院-->
+                                <option value="metal">金属材料工程</option>  <!--Metal_Materials_Engineering-->
+                                <option value="inorg">无机非金属材料工程</option>  <!--Inorganic_Non-metallic_Materials_engineering-->
+
                             </select>
                         </div>
                         <div>
@@ -114,6 +125,7 @@
                             <label class="block text-sm font-medium text-gray-700 mb-1">时间</label>
                             <select id="timeFilter" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary">
                                 <option value="all">全部</option>
+                                <option value="2025">2025年</option>
                                 <option value="2024">2024年</option>
                                 <option value="2023">2023年</option>
                                 <option value="2022">2022年</option>
@@ -168,14 +180,41 @@
             time: 'all'
         };
 
+        // 定义学院和专业的对应关系
+        const majorMap = {
+            'all': [
+                { code: 'all', name: '全部' },
+                { code: 'auto', name: '自动化' },
+                { code: 'ee_sub', name: '电气类' },
+                { code: 'mech', name: '机械设计制造及其自动化' },
+                { code: 'mfc', name: '材料成型及控制工程' },
+                { code: 'metal', name: '金属材料工程' },
+                { code: 'inorg', name: '无机非金属材料工程' }
+            ],
+            'ee': [
+                { code: 'all', name: '全部' },
+                { code: 'auto', name: '自动化' },
+                { code: 'ee_sub', name: '电气类' }
+            ],
+            'me': [
+                { code: 'all', name: '全部' },
+                { code: 'mech', name: '机械设计制造及其自动化' },
+                { code: 'mfc', name: '材料成型及控制工程' }
+            ],
+            'mse': [
+                { code: 'all', name: '全部' },
+                { code: 'metal', name: '金属材料工程' },
+                { code: 'inorg', name: '无机非金属材料工程' }
+            ]
+        };
+
         // 模拟图片数据
         const images = [
-            { id: 1, url: 'https://images.unsplash.com/photo-1500835556837-99ac94a94552?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', title: '活动照片1', grade: '2023', major1: 'cs', major2: 'ai', class: '1', time: '2024', description: '计算机科学与技术1班活动留影。' },
-            { id: 2, url: 'https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', title: '活动照片2', grade: '2022', major1: 'ee', major2: 'ds', class: '2', time: '2024', description: '电子工程2班活动留影。' },
-            { id: 3, url: 'https://images.unsplash.com/photo-1543512214-318c7553f230?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', title: '活动照片3', grade: '2023', major1: 'math', major2: 'ai', class: '3', time: '2023', description: '数学3班活动留影。' },
-            { id: 4, url: 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', title: '活动照片4', grade: '2024', major1: 'cs', major2: 'se', class: '1', time: '2024', description: '计算机科学与技术1班活动留影。' },
-            { id: 5, url: 'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', title: '活动照片5', grade: '2021', major1: 'ee', major2: 'ai', class: '2', time: '2023', description: '电子工程2班活动留影。' },
-            { id: 6, url: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', title: '活动照片6', grade: '2022', major1: 'math', major2: 'ds', class: '3', time: '2022', description: '数学3班活动留影。' },
+            { id: 1, url: '../image_library/25-2/timetable/16.png', title: '16周课表', grade: '2025', major1: 'ee', major2: 'auto', class: '2', time: '2025', description: '电气工程学院自动化2班16周课表' },
+            { id: 1, url: '../image_library/25-2/timetable/17.png', title: '17周课表', grade: '2025', major1: 'ee', major2: 'auto', class: '2', time: '2025', description: '电气工程学院自动化2班17周课表' },
+            { id: 1, url: '../image_library/25-2/members/list/list.png', title: '人员名单', grade: '2025', major1: 'ee', major2: 'auto', class: '2', time: '2025', description: '电气工程学院自动化2班人员名单' },
+            { id: 1, url: '../images/1.jpg', title: '随便一张照片', grade: '2025', major1: 'ee', major2: 'auto', class: '1', time: '2025', description: '' },
+            { id: 2, url: '../images/2.jpg', title: '随便一张照片', grade: '2025', major1: 'me', major2: 'mech', class: '2', time: '2025', description: '机械工程学院机械设计制造及其自动化' },
         ];
 
         // 渲染图片
@@ -220,24 +259,51 @@
 
         function getMajorName(code) {
             const majors = {
-                'cs': '计算机科学',
-                'ee': '电子工程',
-                'math': '数学',
-                'ai': '人工智能',
-                'ds': '数据科学',
-                'se': '软件工程'
+                'ee': '电气工程学院',
+                'me': '机械工程学院',
+                'mse': '材料科学与工程学院',
+                'auto': '自动化',
+                'ee_sub': '电气类',
+                'mech': '机械设计制造及其自动化',
+                'mfc': '材料成型及控制工程',
+                'metal': '金属材料工程',
+                'inorg': '无机非金属材料工程'
             };
             return majors[code] || code;
         }
 
+        // 更新专业2的选项
+        function updateMajor2Options() {
+            const selectedMajor1 = major1Filter.value;
+            const availableMajors2 = majorMap[selectedMajor1];
+            
+            // 清空并重新填充专业2的选项
+            major2Filter.innerHTML = '';
+            availableMajors2.forEach(major => {
+                const option = document.createElement('option');
+                option.value = major.code;
+                option.textContent = major.name;
+                major2Filter.appendChild(option);
+            });
+
+            // 如果当前选中的专业2不在可用选项中，则重置为'全部'
+            if (!availableMajors2.some(major => major.code === major2Filter.value)) {
+                major2Filter.value = 'all';
+            }
+        }
+
         // 初始渲染
         renderImages();
+        updateMajor2Options(); // 初始化专业2的选项
 
         // 搜索功能
         searchInput.addEventListener('input', (e) => {
             currentSearchTerm = e.target.value.toLowerCase();
             renderImages();
         });
+
+        // 专业1改变时，更新专业2的选项
+        major1Filter.addEventListener('change', updateMajor2Options);
 
         // 高级筛选按钮点击事件
         advancedFilterBtn.addEventListener('click', () => {
